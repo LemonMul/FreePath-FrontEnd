@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Button,
 } from 'react-native';
 import React, { useState } from 'react';
 import { Stack } from 'expo-router';
@@ -17,6 +18,7 @@ import Listings from '@/components/Listings';
 import listingData from '@/data/case.json';
 import CompanyListings from '@/components/CompanyListings';
 import companyData from '@/data/company.json';
+import { getAuth, signOut } from 'firebase/auth';
 
 const Page = () => {
   const [category, setCategory] = useState('전체');
@@ -24,6 +26,7 @@ const Page = () => {
   const onCatChanged = (category: string) => {
     setCategory(category);
   };
+  const { currentUser } = getAuth();
 
   return (
     <>
@@ -38,6 +41,7 @@ const Page = () => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.searchSectionWrapper}>
             <View style={styles.searchBar}>
+              <Button title="Sign Out" onPress={() => signOut(getAuth())} />
               <Ionicons name="search" size={18} />
               <TextInput placeholder="카테고리 검색" />
             </View>

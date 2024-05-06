@@ -1,14 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { useFonts } from 'expo-font';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from '@react-navigation/native';
+import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { Button, Text, View } from 'react-native';
+import { useEffect, useState } from 'react';
+
+import { useColorScheme } from '@/components/useColorScheme';
 
 export { ErrorBoundary } from 'expo-router';
 
 export const unstable_settings = {
-  initialRouteName: 'Login',
+  initialRouteName: 'welcome',
 };
 
 SplashScreen.preventAutoHideAsync();
@@ -18,8 +24,6 @@ export default function RootLayout() {
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome.font,
   });
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     if (error) throw error;
@@ -35,30 +39,24 @@ export default function RootLayout() {
     return null;
   }
 
-  return isLoggedIn ? (
-    <RootLayoutNav />
-  ) : (
-    <LoginScreen onLogin={() => setIsLoggedIn(true)} />
-  );
+  return <RootLayoutNav />;
 }
 
 function RootLayoutNav() {
-  return (
-    <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    </Stack>
-  );
-}
+  const colorScheme = useColorScheme();
 
-interface LoginScreenProps {
-  onLogin: () => void;
-}
-
-function LoginScreen({ onLogin }: LoginScreenProps) {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Please log in</Text>
-      <Button title="Log in" onPress={onLogin} />
-    </View>
+    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="modals/modal" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="welcome" options={{ headerShown: false }} />
+        <Stack.Screen name="modals/login" options={{ title: 'LOGIN' ,presentation: 'modal' }} />
+        <Stack.Screen
+          name="modals/register"
+          options={{ title: 'REGISTER', presentation: 'modal' }}
+        />
+      </Stack>
+    </ThemeProvider>
   );
 }

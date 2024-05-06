@@ -1,10 +1,24 @@
 import { View, Text } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import { Tabs } from 'expo-router';
 import { FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import Colors from '@/constants/Colors';
+import { getAuth } from 'firebase/auth';
+
+import { router } from 'expo-router';
 
 export default function _layout() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  getAuth().onAuthStateChanged((user) => {
+    setIsLoading(false);
+    if (!user) {
+      router.replace('/welcome');
+    }
+  });
+
+  if (isLoading) return <Text style={{ paddingTop: 30 }}>Loading...</Text>;
+
   return (
     <Tabs
       // default route = index

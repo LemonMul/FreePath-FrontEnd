@@ -1,19 +1,19 @@
-import { Button, StyleSheet, TextInput } from 'react-native';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { FIREBASE_AUTH } from '@/firebase.config';
+import { Button, StyleSheet, TextInput } from "react-native";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { FIREBASE_AUTH } from "@/firebase.config";
 
-import { Text, View } from '@/components/Themed';
-import { useState } from 'react';
-import { router } from 'expo-router';
+import { Text, View } from "@/components/Themed";
+import { useState } from "react";
+import { router } from "expo-router";
 
 export default function RegisterScreen() {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   const handleRegister = () => {
     createUserWithEmailAndPassword(FIREBASE_AUTH, email, password)
       .then((user) => {
-        if (user) router.replace('/(tabs)');
+        if (user) router.replace("/(tabs)");
       })
       .catch((err) => {
         alert(err?.message);
@@ -21,20 +21,20 @@ export default function RegisterScreen() {
   };
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Register Screen</Text>
+      <Text style={styles.title}>회원가입</Text>
       <TextInput
-        style={{ backgroundColor: 'white', width: '80%', padding: 10 }}
+        style={{ backgroundColor: "white", width: "80%", padding: 10 }}
         placeholder="Email"
         keyboardType="email-address"
         onChangeText={(text) => setEmail(text)}
       />
       <TextInput
-        style={{ backgroundColor: 'white', width: '80%', padding: 10 }}
+        style={{ backgroundColor: "white", width: "80%", padding: 10 }}
         placeholder="Password"
         secureTextEntry
         onChangeText={(text) => setPassword(text)}
       />
-      <Button title={'Register'} onPress={handleRegister} />
+      <Button title={"Register"} onPress={handleRegister} />
     </View>
   );
 }
@@ -42,16 +42,16 @@ export default function RegisterScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   separator: {
     marginVertical: 30,
     height: 1,
-    width: '80%',
+    width: "80%",
   },
 });
